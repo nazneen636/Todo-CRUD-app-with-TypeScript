@@ -9,13 +9,13 @@ const _: toastType = {};
 _.SuccessToast = (msg = "Successfully add your Task") => {
   toast.success(msg, {
     position: "top-right",
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: false,
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: "colored",
+    theme: "dark",
     transition: Bounce,
   });
 };
@@ -29,7 +29,7 @@ _.ErrorToast = (msg = "Something went wrong!") => {
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: "#fff",
+    theme: "dark",
     transition: Bounce,
   });
 };

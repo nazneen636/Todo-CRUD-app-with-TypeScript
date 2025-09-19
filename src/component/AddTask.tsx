@@ -6,6 +6,8 @@ import React, {
 } from "react";
 import { FaPlus } from "react-icons/fa";
 import lib from "../lib/lib";
+import { useNavigate, useNavigation } from "react-router";
+import { RouteTaskList } from "../helpers/route";
 
 const AddTask: FC = () => {
   interface taskType {
@@ -16,7 +18,7 @@ const AddTask: FC = () => {
     title: "",
     description: "",
   });
-
+  const navigate = useNavigate();
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -30,9 +32,14 @@ const AddTask: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    lib.SuccessToast("Successfully add your Task");
-    console.log("submitted task : ", task);
-    setTask({ title: "", description: "" });
+    const { title, description } = task;
+    if (title === "" || description === "") {
+      lib.ErrorToast("Input field is missing");
+    } else {
+      lib.SuccessToast("Successfully add your Task");
+      setTask({ title: "", description: "" });
+      navigate(RouteTaskList);
+    }
   };
   return (
     <div>
@@ -72,7 +79,7 @@ const AddTask: FC = () => {
         </div>
 
         <button
-          type="button"
+          type="submit"
           onClick={handleSubmit}
           className="w-full py-3 bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-pink-700 hover:scale-[1.02] transition flex items-center justify-center gap-2"
         >
