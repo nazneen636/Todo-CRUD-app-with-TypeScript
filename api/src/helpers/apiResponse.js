@@ -9,7 +9,7 @@ class apiResponse {
   static sendSuccess(res, statusCode, message, data) {
     return res
       .status(statusCode)
-      .json(new apiResponse(message, statusCode, data));
+      .json(new apiResponse(statusCode, message, data));
   }
 }
 
