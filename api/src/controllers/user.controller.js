@@ -2,6 +2,7 @@ const apiResponse = require("../helpers/apiResponse");
 const { asyncHandler } = require("../helpers/asyncHandler");
 const { validateUser } = require("../validations/user.validation");
 const userModel = require("../models/user.modal");
+const crypto = require("crypto");
 exports.registration = asyncHandler(async (req, res) => {
   const value = await validateUser(req);
   const userData = await new userModel({
@@ -9,6 +10,8 @@ exports.registration = asyncHandler(async (req, res) => {
     email: value.email || null,
     password: value.password,
   }).save();
-  console.log(value);
+  const otp = crypto.randomInt(1000, 9999);
+  const expiryTime = Date.now() + 10 * 60 * 1000;
+  console.log(expiryTime);
   apiResponse.sendSuccess(res, 201, "User registered successfully!", userData);
 });
