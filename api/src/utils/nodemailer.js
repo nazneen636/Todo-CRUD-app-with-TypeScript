@@ -3,8 +3,9 @@ const { customError } = require("../helpers/customError");
 
 // Create a test account or replace with real credentials.
 const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
+  //   host: "smtp.ethereal.email",
+  //   port: 587,
+  service: "gmail",
   secure: process.env.NODE_ENV == "development" ? false : true, // true for 465, false for other ports
   auth: {
     user: process.env.HOST_MAIL,
@@ -13,13 +14,13 @@ const transporter = nodemailer.createTransport({
 });
 
 // Wrap in an async IIFE so we can use await.
-exports.mailer = async (email, subject = "Confirm your email", template) => {
+exports.mailer = async (email, subject, template = "Html template") => {
   try {
     const info = await transporter.sendMail({
       from: "no-reply",
       to: email,
       subject: subject,
-      text: "Email verification for registration", // plain‑text body
+      text: "Hello", // plain‑text body
       html: template, // HTML body
     });
 

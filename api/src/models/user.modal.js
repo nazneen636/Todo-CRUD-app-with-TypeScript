@@ -20,6 +20,8 @@ const userSchema = new Schema(
       trim: true,
     },
     emailIsVerified: { type: Boolean, default: false },
+    otp: { type: Number },
+    otpExpiry: { type: Date },
   },
   { timestamps: true }
 );
