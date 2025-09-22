@@ -2,7 +2,7 @@ const Joi = require("joi");
 const { customError } = require("../helpers/customError");
 const userValidationSchema = Joi.object(
   {
-    name: Joi.string().empty().min(3).trim().max(30).required().messages({
+    name: Joi.string().empty().min(3).trim().max(30).messages({
       "string.empty": "Name is required",
       "string.min": "Name must be at least 5 characters long",
       "string.max": "Name must not exceed 20 characters",
@@ -30,13 +30,13 @@ const userValidationSchema = Joi.object(
 
 const validateUser = async (req) => {
   try {
-    const value = userValidationSchema.validateAsync(req.body);
+    const value = await userValidationSchema.validateAsync(req.body);
     return value;
   } catch (error) {
-    throw new customError(
-      401,
-      "user validation error " + error.details.map((err) => err.message)
-    );
+    const message = error?.details
+      ? error.details.map((err) => err.message).join(", ")
+      : error.message || "Validation failed";
+    throw new customError(401, "user validation error " + message);
   }
 };
 module.exports = { validateUser };

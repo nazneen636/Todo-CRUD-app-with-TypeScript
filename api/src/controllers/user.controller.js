@@ -7,6 +7,7 @@ const { mailer } = require("../utils/nodemailer");
 const { confirmRegistrationTemplate } = require("../utils/htmlTemplate");
 const { log } = require("console");
 const { customError } = require("../helpers/customError");
+
 exports.registration = asyncHandler(async (req, res) => {
   const value = await validateUser(req);
   const userData = await new userModel({
@@ -55,4 +56,19 @@ exports.verifyEmail = asyncHandler(async (req, res) => {
   user.otpExpiry = null;
   await user.save();
   apiResponse.sendSuccess(res, 200, "verify done", user);
+});
+
+exports.login = asyncHandler(async (req, res) => {
+  const { email, password } = await validateUser(req);
+  const user = await userModel.findOne({
+    email,
+  });
+  if (!user) {
+    throw new customError(401, "user not found");
+  }
+  const isPasswordMatched = await user.comparePassword(password);
+  if (!isPasswordMatched) {
+    throw new customError(401, "password not matched");
+  }
+  apiResponse.sendSuccess(res, 200, "login successfully", user);
 });
